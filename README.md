@@ -1,2 +1,2 @@
 # testRepo
-Its a test repository 
+Its a test repository. This is created for demo purpose only
