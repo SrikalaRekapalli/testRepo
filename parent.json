@@ -10,7 +10,7 @@
       "properties": {
         "mode": "incremental",
         "templateLink": {
-          "uri": " ",
+          "uri": " https://github.com/pradeepts/testRepo/edit/LinkedTemplateTest/helloworld.json",
           "contentVersion": "1.0.0.0"
         }
       }
