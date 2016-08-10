@@ -60,14 +60,14 @@
         "description": "Virtual Network Address Prefix"
       }
     },
-    "subnet1Name": {
+    "subnetName": {
       "type": "string",
       "defaultValue": "subnet1",
       "metadata": {
         "description": "Subnet1 Name"
       }
     },
-    "subnet1Prefix": {
+    "subnetPrefix": {
       "type": "string",
       "defaultValue": "10.0.1.0/24",
       "metadata": {
