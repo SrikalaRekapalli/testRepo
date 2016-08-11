@@ -46,8 +46,8 @@
     "tag": {
       "type": "object",
       "defaultValue": {
-        "key1": "key",
-        "value1": "value"
+        "key1": "vnet",
+        "value1": "hortonworks"
       },
       "metadata": {
         "description": "Tag Values"
