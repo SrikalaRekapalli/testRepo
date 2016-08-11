@@ -151,7 +151,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('nicNamePrefix'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('networkInterfaceName'))]"
             }
           ]
         }
