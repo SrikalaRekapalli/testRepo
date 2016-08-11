@@ -98,7 +98,7 @@
         "description": "Storage Account Name"
       }
     },
-    "nicNamePrefix": {
+    "networkInterfaceName": {
       "type": "string",
       "metadata": {
         "description": "Network Interface Card Prefix."
