@@ -60,6 +60,12 @@
         "description": "Public IP DNS Prefix"
       }
     }
+    "publicIpAllocationMethod":{
+      "type": "string",
+      "metadata": {
+        "description": "Public IP Allocation type."
+      }
+    }
   },
   "variables": {},
   "resources": [
