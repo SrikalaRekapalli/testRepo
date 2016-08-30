@@ -11,11 +11,7 @@
     },
     "storageApiVersion": {
       "type": "string",
-      "defaultValue": "2015-06-15",
-      "allowedValues": [
-        "2015-05-01-preview",
-        "2015-06-15"
-      ],
+      "defaultValue": "2016-06-01",
       "metadata": {
         "description": "API Version for the Storage Account"
       }
