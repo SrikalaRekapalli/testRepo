@@ -15,4 +15,5 @@ else
 Write-Host "Installing Informatica Cloud Secure Agent............" 
 cd 'C:\'
 mkdir $filename
+exit
 }
