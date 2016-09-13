@@ -47,7 +47,7 @@
             "properties": {
                 "publisher": "Microsoft.Compute",
                 "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.7",
+                "typeHandlerVersion": "2.0",
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": "[parameters('scriptUrl')]"
