@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "East US",
+            "allowedValues": [
+                "Brazil South",
+                "East Asia",
+                "East US",
+                "Japan East",
+                "Japan West",
+                "North Central US",
+                "North Europe",
+                "South Central US",
+                "West Europe",
+                "West US",
+                "Southeast Asia",
+                "Central US",
+                "East US 2"
+            ]
+        },
+        "vmName": {
+            "type": "string",
+            "defaultValue": "informatica-windows"
+        },
+        "vmExtensionName": {
+            "type": "string",
+            "defaultValue": "customScript"
+        },
+        "scriptUrl": {
+            "type": "string",
+            "defaultValue": "https://raw.githubusercontent.com/sysgain/arm-components/informatica-cloud-service/scripts/ICExtention.ps1?token=AT2LgFT2EuZH8Qbj4uE74PTOIkFDQNRhks5X38Q1wA%3D%3D"
+        },
+        "commandToExec":{
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('vmName'),'/',parameters('vmExtensionName'))]",
+            "apiVersion": "2015-06-15",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.7",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": "[parameters('scriptUrl')]"
+                },
+                "protectedSettings": {
+                    "commandToExecute": "[parameters('commandToExec')]"
+                }
+            }
+        }
+    ]
+}
