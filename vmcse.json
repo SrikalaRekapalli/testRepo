@@ -31,10 +31,11 @@
         },
         "scriptUrl": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/sysgain/arm-components/informatica-cloud-service/scripts/ICExtention.ps1?token=AT2LgFT2EuZH8Qbj4uE74PTOIkFDQNRhks5X38Q1wA%3D%3D"
+            "defaultValue": "https://raw.githubusercontent.com/pradeepts/testRepo/master/cse.ps1"
         },
         "commandToExec":{
-            "type": "string"
+            "type": "string",
+             "defaultValue":"powershell -ExecutionPolicy Unrestricted -File cse.ps1 tspfolder"
         }
     },
     "resources": [
