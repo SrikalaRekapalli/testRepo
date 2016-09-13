@@ -41,7 +41,7 @@
     "resources": [
         {
             "type": "CustomScriptExtension",
-            "name": "[concat(parameters('vmName'),'/',parameters('vmExtensionName'))]",
+            "name": "testcustext",
             "apiVersion": "2015-06-15",
             "location": "[parameters('location')]",
             "properties": {
