@@ -40,7 +40,7 @@
     },
     "resources": [
         {
-            "type": "CustomScriptExtension",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "testcustext",
             "apiVersion": "2015-06-15",
             "location": "[parameters('location')]",
