@@ -41,7 +41,7 @@
     "resources": [
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "testcustext",
+            "name": "[concat(parameters('vmName'),'/',parameters('vmExtensionName'))]",
             "apiVersion": "2015-06-15",
             "location": "[parameters('location')]",
             "properties": {
