@@ -1,2 +1,14 @@
-## Introduction: Using DgSecure in the Hortonworks Sandbox
-DBAs nowadays are no longer involved in the cradle-to-grave life cycle of databases.  They are now separate departments that maintain hundreds of databases and are no longer familiar with every database, every table and every column.  The need to now protect sensitive data within those databases for test/dev users becomes harder and harder without DBAs being tightly involved day after day.  Dataguise’s DgSecure for DBMS will show you how to find all of your sensitive data within these databases and then (with that Discovery knowledge), now confidently mask these copies this protecting your organization from insider breaches.  
+##Introduction
+
+DataSunrise Database Security Suite is data-centric database security and data audit & monitoring software capable to defend all popular relational databases. DataSunrise implements unique intelligent analysis algorithms to scan the database traffic and block any data breach attempts. DataSunrise also analyzes database responses and prevents accidental leakage of the sensitive data from the database.  DataSunrise provides the most complete functionality in its class due to its advanced functional modules: Data Audit & Monitoring, Data Security (database firewall) and Data Masking. 
+###DataSunrise
+
+• Audits database traffic 
+• Protects a database against SQL injections and prevent unauthorized access to database contents 
+• Masks and obfuscates the output from the database on-the-fly 
+• Learns typical database user behavior and create a white list of “safe” user queries 
+• Notifies database administrator or any other person via email when detected a threat  
+• Integrates with third party systems such as SIEMs using Syslog or SNMP traps 
+##DataSunrise Security Policies and Rules 
+
+Since each DataSunrise module serves its own purpose, a comprehensive way to manage their corresponding algorithms was developed — the “Rules”. Each Rule is an independent system of settings used to specify which database objects DataSunrise should monitor and how it should react to a threat. DataSunrise includes a dedicated set of rules for each module: Data Audit, Data Security, Data Masking and Learning rules respectively.
