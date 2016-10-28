@@ -19,11 +19,8 @@
     "virtualNetworkAddressPrefix": "[parameters('networkSettings').virtualNetworkAddressPrefix]",
     "virtualNetworkId" : "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Name": "[parameters('networkSettings').subnet.sh.name]",
-    "subnet2Name": "[parameters('networkSettings').subnet.idx.name]",
     "subnet1Prefix": "[parameters('networkSettings').subnet.sh.prefix]",
-    "subnet2Prefix": "[parameters('networkSettings').subnet.idx.prefix]",
-    "subnet1Ref" : "[concat(variables('virtualNetworkId'),'/subnets/',variables('subnet1Name'))]",
-    "subnet2Ref" : "[concat(variables('virtualNetworkId'),'/subnets/',variables('subnet2Name'))]"
+    "subnet1Ref" : "[concat(variables('virtualNetworkId'),'/subnets/',variables('subnet1Name'))]"
   },
   "resources": [
     {
@@ -43,12 +40,7 @@
             "properties": {
               "addressPrefix": "[variables('subnet1Prefix')]"
             }
-          },
-          {
-            "name": "[variables('subnet2Name')]",
-            "properties": {
-              "addressPrefix": "[variables('subnet2Prefix')]"
-            }
+          }
           }
         ]
       }
@@ -57,10 +49,6 @@
   "outputs": {
     "subnet1Ref": {
       "value": "[variables('subnet1Ref')]",
-      "type": "string"
-    },
-    "subnet2Ref": {
-      "value": "[variables('subnet2Ref')]",
       "type": "string"
     }
   }
