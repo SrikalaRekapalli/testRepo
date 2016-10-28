@@ -41,7 +41,6 @@
               "addressPrefix": "[variables('subnet1Prefix')]"
             }
           }
-          }
         ]
       }
     }
