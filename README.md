@@ -1,2 +1,2 @@
-# testRepo
-Its a test repository. This is created for demo purpose only. Inside a edit branch. New text
+# MarkLogic
+This branch contains all the files related to MarkLogic
