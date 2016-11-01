@@ -14,14 +14,14 @@
             "metadata": {
                 "description": "This is the name of the load balancer"
             }
-        },
+        }
     },
     "variables": {
         "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
         "lbID": "[resourceId('Microsoft.Network/loadBalancers',parameters('loadBalancerName'))]",
         "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/LoadBalancerFrontEnd')]",
         "lbPoolID": "[concat(variables('lbID'),'/backendAddressPools/BackendPool1')]",
-        "lbProbeID": "[concat(variables('lbID'),'/probes/tcpProbe')]",
+        "lbProbeID": "[concat(variables('lbID'),'/probes/tcpProbe')]"
     },
     "resources": [
         {
