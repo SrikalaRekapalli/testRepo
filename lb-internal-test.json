@@ -39,7 +39,7 @@
             "name": "[parameters('loadBalancerName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "virtual-network"
+                  "[variables('vnetID')]"
             ],
             "properties": {
                 "frontendIPConfigurations": [
