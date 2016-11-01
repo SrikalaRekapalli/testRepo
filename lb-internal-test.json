@@ -38,9 +38,6 @@
             "type": "Microsoft.Network/loadBalancers",
             "name": "[parameters('loadBalancerName')]",
             "location": "[resourceGroup().location]",
-            "dependsOn": [
-                  "[variables('vnetID')]"
-            ],
             "properties": {
                 "frontendIPConfigurations": [
                     {
