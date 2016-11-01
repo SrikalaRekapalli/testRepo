@@ -29,9 +29,6 @@
             "type": "Microsoft.Network/loadBalancers",
             "name": "[parameters('loadBalancerName')]",
             "location": "[resourceGroup().location]",
-            "dependsOn": [
-               "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]"
-            ],
             "properties": {
                 "frontendIPConfigurations": [
                   {
