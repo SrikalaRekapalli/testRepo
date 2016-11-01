@@ -18,6 +18,13 @@
                 "description": "Identifies whether to use new or existing Virtual Network"
             }
         },
+        "virtualNetworkExistingRGName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of resource group of existing Virtual Network (if applicable)"
+            }
+        },
         "subnet1Name": {
             "type": "string",
             "defaultValue": "backendSubnet",
