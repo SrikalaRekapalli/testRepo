@@ -1,8 +1,12 @@
-
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
+    "parameters": {        "virtualNetworkName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the virtual network that the consumer wants to use"
+            }
+        },
         "virtualNetworkNewOrExisting": {
             "type": "string",
             "defaultValue": "new",
@@ -30,7 +34,7 @@
     },
     "variables": {
         "subnetName": "[parameters('subnet1Name')]",
-                "vnetId-new": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
+         "vnetId-new": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
         "vnetId-existing": "[resourceId(parameters('virtualNetworkExistingRGName'),'Microsoft.Network/virtualNetworks/',parameters('virtualNetworkName'))]",
         "vnetID": "[variables(concat('vnetId-', parameters('virtualNetworkNewOrExisting')))]",
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables ('subnetName'))]"
