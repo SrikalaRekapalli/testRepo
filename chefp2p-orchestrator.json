@@ -86,6 +86,10 @@
       "type": "securestring",
       "defaultValue": ""
     },
+    "orchestratorbaseurl": {
+    "type": "string",
+     "defaultValue": ""
+     },
     "componentBaseUrl": {
       "type": "string",
       "defaultValue": ""
