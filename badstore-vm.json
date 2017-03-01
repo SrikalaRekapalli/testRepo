@@ -75,10 +75,10 @@
                         "name": "[concat(parameters('virtualMachineName'),'-osDisk')]",
                         "createOption": "FromImage",
                         "image": {
-                            "uri": "https://badstoresr.blob.core.windows.net/vhds/osImage/4zrjwwaq.icx201506091310050783.vhd"
+                            "uri": "https://badstoresa12.blob.core.windows.net/vhds/osImage/4zrjwwaq.icx201506091310050783.vhd"
                         },
                         "vhd": {
-                            "uri": "[concat('https://badstoresr.blob.core.windows.net/',parameters('storageContainer'),'/',parameters('virtualMachineName'),'-osDisk.',uniqueString(resourceGroup().id),'.vhd')]"
+                            "uri": "[concat('https://badstoresa12.blob.core.windows.net/',parameters('storageContainer'),'/',parameters('virtualMachineName'),'-osDisk.',uniqueString(resourceGroup().id),'.vhd')]"
                         },
                         "caching": "ReadWrite"
                     }
