@@ -210,7 +210,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "parameters('vmname')/CustomScriptForLinux",
+            "name": "webgoat-vm/CustomScriptForLinux",
             "apiVersion": "2016-03-30",
             "location": "westus",
             "properties": {
