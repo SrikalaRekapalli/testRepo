@@ -29,5 +29,5 @@ sudo service docker start
 sudo systemctl enable docker
 
 docker pull webgoat/webgoat-7.1
-sleep 180
+sleep 90
 docker run -p 8080:8080 webgoat/webgoat-7.1
