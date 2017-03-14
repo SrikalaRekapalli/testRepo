@@ -1,0 +1,145 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "westus",
+            "metadata": {
+                "description": "Deployment Location Hint: Use lowercase for creating ipaddress"
+            }
+        },
+
+        "vmname":{
+            "type": "string",
+            "defaultValue": "webgoat-vm",
+            "metadata": {
+                "description":"VirtualMachine Name"
+            }
+        },
+        "saname":{
+            "type": "string",
+            "defaultValue": "webgoatsa",
+            "metadata": {
+                "description":"Storage Account Name"
+            }
+        },
+        "adminPassword":{
+            "type": "securestring",
+            "defaultValue": "Solojava@123",
+            "metadata": {
+                "description":"Admin Password of Virtual Machine to SSH or RDP"
+            }
+        },
+        "nicname":{
+            "type": "string",
+            "defaultValue": "webgoat-nic",
+            "metadata": {
+                "description":"Network Security Group Name"
+            }
+        },
+        "vmSize":{
+            "type": "string",
+            "defaultValue": "Standard_DS2_v2",
+            "metadata": {
+                "description":"Virtual Machine Size"
+            }
+        },
+        "imagePublisher":{
+            "type": "string",
+            "defaultValue": "Canonical",
+            "metadata": {
+                "description":"Virtual Machine Image Publisher"
+            }
+        },
+        "imageOffer":{
+            "type": "string",
+            "defaultValue": "UbuntuServer",
+            "metadata": {
+                "description":"Virtual Machine Image Offer"
+            }
+        },
+         "imageSKU":{
+            "type": "string",
+            "defaultValue": "16.10",
+            "metadata": {
+                "description":"Virtual Machine Image SKU"
+            }
+        },
+         "imageVersion":{
+            "type": "string",
+            "defaultValue": "latest",
+            "metadata": {
+                "description":"Virtual Machine Image Version"
+            }
+        },
+        "adminUsername":{
+            "type": "string",
+            "defaultValue": "tspadmin",
+            "metadata": {
+                "description":"Admin Username of Virtual Machine to SSH or RDP"
+            }
+        },
+       "computeApiVersion": {
+           "type": "string",
+           "defaultValue": "2015-06-15",
+           "metadata": {
+               "description":"API Version for the Compute Resources"
+           }
+       }
+
+    },
+     "variables": {
+    },
+    "resources": [
+       {
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('vmname')]",
+            "apiVersion": "[parameters('computeApiVersion')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher":"[parameters('imagePublisher')]",
+                        "offer": "[parameters('imageOffer')]",
+                        "sku": "[parameters('imageSKU')]",
+                        "version": "[parameters('imageVersion')]"
+                    },
+                    "osDisk": {
+                        "name": "[parameters('vmname')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('saname'), '.blob.core.windows.net/vhds/', parameters('vmname'),'-osdisk.vhd')]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('vmname')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nicname'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('saname'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('nicname'))]"
+            ]
+        }
+    ]
+}

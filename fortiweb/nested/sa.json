@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "saname": {
+            "type": "string",
+            "defaultValue": "webgoatsa",
+            "metadata": {
+                "description":"storage account name"
+            }
+        }
+    },
+     "variables": {
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "kind": "Storage",
+            "name": "[parameters('saname')]",
+            "apiVersion": "2016-01-01",
+            "location": "westus",
+            "sku": {
+                "name": "Premium_LRS",
+                "tier": "Premium"
+            },
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        }
+    ]
+}

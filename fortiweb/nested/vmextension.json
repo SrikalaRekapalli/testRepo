@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "westus",
+            "metadata": {
+                "description": "Deployment Location Hint: Use lowercase for creating ipaddress"
+            }
+        },
+         "computeApiVersion": {
+           "type": "string",
+           "defaultValue": "2016-03-30",
+           "metadata": {
+               "description":"API Version for the Compute Resources"
+           }
+       },
+       "vmname": {
+           "type": "string",
+           "defaultValue": "webgoat-vm",
+           "metadata": {
+               "description":"VirtualMachine Name"
+           }
+       }
+    },
+     "variables": {
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "webgoat-vm/CustomScriptForLinux",
+            "apiVersion": "[parameters('computeApiVersion')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.OSTCExtensions",
+                "type": "CustomScriptForLinux",
+                "typeHandlerVersion": "1.4",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/pradeepts/testRepo/master/docker-install.sh"
+                    ]
+                },
+                "protectedSettings": {
+                    "commandToExecute": "sh docker-install.sh"
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmname'))]"
+            ]
+        }
+    ]
+}

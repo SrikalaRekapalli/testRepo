@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+       "nicname": {
+           "type": "string",
+           "defaultValue": "webgoat-nic",
+           "metadata": {
+               "description": "networkInterface Name"
+           }
+       },
+       "pipname": {
+           "type": "string",
+           "defaultValue": "webgoat-ip",
+           "metadata": {
+               "description": "publicIPAddress Name"
+           }
+       },
+       "vnetname" :{
+        "type": "string",
+           "defaultValue": "webgoat-vnet",
+           "metadata": {
+               "description": "virtualNetwork Name"
+           }
+       },
+       "nsgname" :{
+        "type": "string",
+           "defaultValue": "webgoat-nsg",
+           "metadata": {
+               "description": "networkSecurityGroup Name"
+           }
+       }
+    },
+     "variables": {
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('nicname')]",
+            "apiVersion": "2016-03-30",
+            "location": "westus",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "172.16.2.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipname'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetname')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgname'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipname'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetname'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgname'))]"
+            ]
+        }
+    ]
+}
