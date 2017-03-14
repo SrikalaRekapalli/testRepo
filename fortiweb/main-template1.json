@@ -1,0 +1,253 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+            "adminUsername": {
+            "defaultValue": "tspadmin",
+            "type": "securestring"
+        },
+        "adminPassword": {
+            "defaultValue": "Solojava@123",
+            "type": "securestring"
+        }
+    },
+     "variables": {
+         "prefix": "[uniqueString(resourceGroup().id)]",
+         "vmname":"webgoat-vm",
+         "templateURL":"https://raw.githubusercontent.com/yougandarnaik/quickstar/webgoat/webgoat",
+         "vnetname":"[concat(variables('vmname'),'-vnet')]",
+         "virtualNetworkURL":"[concat(variables('templateURL'),'/nested/vnet.json')]",
+         "pipname":"[concat(variables('vmname'),'-pib')]",
+         "publicIPURL":"[concat(variables('templateURL'),'/nested/publicip.json')]",
+         "saname":"[concat('str', substring(variables('prefix') ,4,9))]",
+         "storageAccountURL":"[concat(variables('templateURL'),'/nested/sa.json')]",
+         "nsgname": "[concat(variables('vmname'),'-nsg')]",
+         "networkSecurityGroupURL":"[concat(variables('templateURL'),'/nested/nsg.json')]",
+         "nicname": "[concat(variables('vmname'),'-nic')]",
+         "location": "[resourceGroup().location]",
+         "vmSize": "Standard_DS2_v2",
+         "vmStorageAccountContainerName": "vhds",
+         "adminUsername": "[concat(parameters('adminUsername'))]",
+         "adminPassword":"[concat(parameters('adminPassword'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Premium_LRS",
+                "tier": "Premium"
+            },
+            "kind": "Storage",
+            "name": "[variables('saname')]",
+            "apiVersion": "2016-01-01",
+            "location": "[variables('location')]",
+            "tags": {},
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('storageAccountURL')]",
+                    "contentVersion": "1.0.0.0"
+                }
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[variables('vnetname')]",
+            "apiVersion": "2016-03-30",
+            "location": "[variables('location')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('virtualNetworkURL')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "172.16.2.0/24"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "172.16.2.0/24"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('pipname')]",
+            "apiVersion": "2016-03-30",
+            "location": "[variables('location')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('publicIPURL')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('nicname')]",
+            "apiVersion": "2016-03-30",
+            "location": "[variables('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "172.16.2.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipname'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnetname')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipname'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetname'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('nsgname')]",
+            "apiVersion": "2016-03-30",
+            "location": "[variables('location')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('networkSecurityGroupURL')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "securityRules": [
+                    {
+                        "name": "default-allow-ssh",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "webapp-inbound",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "8080",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1010,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[variables('vmname')]",
+            "apiVersion": "2015-06-15",
+            "location": "[variables('location')]",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.10",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[variables('vmname')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', variables('saname'), '.blob.core.windows.net/vhds/', variables('vmname'),'-osdisk.vhd')]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[variables('vmname')]",
+                    "adminUsername": "[variables('adminUsername')]",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[variables('adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicname'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('saname'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('nicname'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "webgoat-vm/CustomScriptForLinux",
+            "apiVersion": "2016-03-30",
+            "location": "[variables('location')]",
+            "properties": {
+                "publisher": "Microsoft.OSTCExtensions",
+                "type": "CustomScriptForLinux",
+                "typeHandlerVersion": "1.4",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/pradeepts/testRepo/master/docker-install.sh"
+                    ]
+                },
+                "protectedSettings": {
+                    "commandToExecute": "sh docker-install.sh"
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', variables('vmname'))]"
+            ]
+        }
+    ]
+}
